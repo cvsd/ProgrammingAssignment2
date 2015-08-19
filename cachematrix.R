@@ -1,6 +1,7 @@
 ## Programming assignment 2 of R Programming requires an R function that caches
 ## matrix inverse previously computed, since the computation is potentially
-## time-consuming.
+## time-consuming. This will be done by two functions, a constructor and a
+## computor.
 
 ## The function makeCacheMatrix() constructs a matrix with cached inverse. It
 ## has four sub-functions:
@@ -20,7 +21,7 @@ makeCacheMatrix <- function(m = matrix()){
         inv <<- NULL
     }
     
-    ## the function get() return matrix data
+    ## the function get() returns matrix data
     get <- function() m
     
     ## the funtion setinverse() sets inverse of the matrix m givien in parent
