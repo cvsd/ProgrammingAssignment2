@@ -1,59 +1,52 @@
-## Programming assignment 2 of R Programming requires an R function that caches
-## matrix inverse previously computed, since the computation is potentially
-## time-consuming. This will be done by two functions, a constructor and a
-## computor.
+## R function to cache matrix inverse computation
 
-## The function makeCacheMatrix() constructs a matrix with cached inverse. It
-## has four sub-functions:
-## set() sets the matrix with input data;
-## get() returns the cached matrix;
-## setinverse() computes the inverse of the cached matrix;
-## getinverse() returns the cached inverse.
+## The function makeCacheMatrix() constructs a matrix with its inverse cache:
+## set() sets the matrix with input data and initialize its inverse as NULL
+## get() returns the matrix
+## setinverse() computes the matrix inverse
+## getinverse() returns the cached matrix inverse
 
 makeCacheMatrix <- function(m = matrix()){
-    ## inv is the inverse of matrix; initialized with NULL
+    ## Default value of matrix inverse: NULL
     inv <- NULL
     
-    ## the function set() constructs a matrix with cache from the input m and
-    ## initializes its inverse with NULL
+    ## set matrix with input data; initialize its inverse as NULL
     set <- function(x) {
         m <<- x
         inv <<- NULL
     }
     
-    ## the function get() returns matrix data
+    ## return matrix 
     get <- function() m
     
-    ## the funtion setinverse() sets inverse of the matrix m givien in parent
-    ## environment using the function solve() that solves the equation 
-    ## a %*% x = b for x, where b can be either a vector or a matrix. inv is
-    ## the variable of parent environment, so the operator <<- is used
+    ## compute matrix inverse using function solve()
+    ## solve(a) solves the equation a %*% x = I (I is identity matrix)
     setinverse <- function() inv <<- solve(m)
     
-    ## the function getinverse() returns inverse data
+    ## return matrix inverse
     getinverse <- function() inv
     
-    ## the parent function makeCacheMatrix() returns a list of 4 elements
+    ## R function makeCacheMatrix() returns a list of 4
     list(set = set, get = get, setinverse = setinverse, getinverse = getinverse)
 }
 
 
-## The function cacheSolve() computes the inverse of a matrix with cache. If 
-## the matrix has cached inverse, the cached data is returned; otherwise it
+## The function cacheSolve() computes the matrix inverse. If the matrix 
+## has cached inverse, then cached data is returned; otherwise the inverse
 ## will be computed and cached, then returned.
 
 cacheSolve <- function(m, ...){
-    ## inv is the cached inverse of the matrix
+    ## inv is the cached inverse of the matrix that can be NULL
     inv <- m$getinverse()
     
-    ## to compute inv value.
+    ## compute matrix inverse
     if(!is.null(inv)) {
-    ## if inv is cached (set with NOT NULL value), then the cached data is 
+    ## if inv is cached (a non-NULL value), then the cached data is 
     ## returned immediately
         message("getting cached inverse")
         return(inv)
     }else{
-    ## if inv is NULL value, call function setinverse()
+    ## if inv is NULL, then call function setinverse()
         message("no cached inverse; computing")
         m$setinverse()
         inv <- m$getinverse()
